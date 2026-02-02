@@ -48,8 +48,8 @@
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.15);
       transition: all 0.3s ease;
-      max-height: 90vh; /* Limits height for better mobile scrolling */
-      overflow-y: auto; /* Adds scroll if content is too long */
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .art {
@@ -70,7 +70,7 @@
       width: min(520px, 92%);
       height: 150px;
       margin: 0 auto;
-      touch-action: none; /* Crucial for mobile touch handling */
+      touch-action: none;
     }
 
     button {
@@ -87,6 +87,7 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, background .12s ease;
+      white-space: nowrap; /* Prevents text breaking in buttons */
     }
 
     #yesBtn {
@@ -119,7 +120,7 @@
     }
 
     .result h2 {
-      font-size: clamp(30px, 4.5vw, 46px);
+      font-size: clamp(28px, 4vw, 40px); /* Slightly smaller for mobile fit */
       margin: 10px 0;
       text-align: center;
       color: #ff1f68;
@@ -138,36 +139,41 @@
       margin-bottom: 20px;
     }
 
-    /* FINAL OPTIONS STYLING */
+    /* FINAL OPTIONS STYLING - FIXED OVERLAP */
     .final-options {
       text-align: center;
       margin-top: 20px;
       padding-top: 20px;
       border-top: 1px dashed #ffcae0;
       position: relative;
-      height: 120px; /* Space for buttons to move */
+      height: 160px; /* Increased height to prevent overlap */
+      width: 100%;
     }
 
     .final-options p {
       font-size: 18px;
       font-weight: bold;
       color: #ff3b7a;
-      margin-bottom: 20px;
+      margin-bottom: 30px; /* Push text up */
+      position: absolute;
+      width: 100%;
+      top: 10px;
+      left: 0;
     }
 
     .final-btn {
-      position: absolute; /* Allows movement */
-      top: 60%; /* Position below text */
+      position: absolute;
+      top: 80px; /* Moved buttons lower */
     }
     
     #finalYes {
-      left: 20%;
+      left: 15%; /* Adjusted for better mobile spacing */
       background: var(--yes);
       color: white;
     }
     
     #finalNo {
-      left: 60%;
+      left: 65%; /* Adjusted for better mobile spacing */
       background: #e5e7eb;
       color: #111827;
     }
@@ -176,15 +182,29 @@
       display: none;
       text-align: center;
       color: #ff3b7a;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
       animation: pop 0.5s ease;
+    }
+
+    /* STYLE FOR YOUR PHOTO (MEKA) */
+    .meka-pic {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      object-position: top; /* Focus on face */
+      border-radius: 50%; /* Circle shape */
+      border: 5px solid #ff3b7a;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      margin: 15px auto;
+      display: block;
     }
 
     .fireworks {
       width: min(200px, 50vw);
       margin: 10px auto;
       display: block;
+      border-radius: 10px;
     }
 
     @keyframes pop {
@@ -251,7 +271,7 @@ Mana Pellitho vestha... ee shairi ki 'The End Card-u'
 Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
 
 <b>Final ga cheppedhi enti ante...</b>
-
+        
 My love is a dangerous addiction,
 Nuvvu oppukunte avuthav naa family ki addition,
 Ledhante naa lantodu inkodu dhorakadu...
@@ -265,8 +285,12 @@ Ledhante naa lantodu inkodu dhorakadu...
       </div>
 
       <div class="grand-finale" id="grandFinale">
-        <h2>Welcome to the Family! ❤️</h2>
+        <h2>Welcome to the Meka Family! ❤️</h2>
+        
+        <img class="meka-pic" src="meka.jpg" alt="The Limited Edition Groom" />
+        
         <p>You chose the Limited Edition! No Refunds! 😂</p>
+        
         <img class="fireworks" src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" alt="Fireworks"/>
       </div>
 
@@ -319,47 +343,42 @@ Ledhante naa lantodu inkodu dhorakadu...
       }, 300);
     }
 
-    /* ---------- RUNAWAY LOGIC (UPDATED FOR MOBILE) ---------- */
-    function clamp(n, min, max) {
-      return Math.max(min, Math.min(max, n));
-    }
-
+    /* ---------- RUNAWAY LOGIC ---------- */
     function runAway(btn, container) {
       const z = container.getBoundingClientRect();
       const b = btn.getBoundingClientRect();
-
-      // Simple random jump for mobile/touch reliability
+      
       let newLeft = Math.random() * (z.width - b.width);
       let newTop = Math.random() * (z.height - b.height);
+      
+      // Ensure buttons don't disappear too far up in final container
+      if (container.id === 'finalOptions') {
+          // Keep it somewhat lower so it doesn't cover text again
+          newTop = Math.max(newTop, 40); 
+      }
 
       btn.style.left = newLeft + "px";
       btn.style.top = newTop + "px";
       btn.style.transform = "none";
     }
 
-    // MAIN NO BUTTON (Mobile & Desktop)
-    function moveNo(px, py) {
-      // Keep existing smooth logic for mouse hover if needed, 
-      // but 'runAway' is safer for mobile taps.
+    /* ---------- MAIN NO BUTTON EVENTS ---------- */
+    // Mobile Touch
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
       runAway(noBtn, zone);
-    }
+    });
 
-    // Mouse Interaction
+    // Mouse Hover
     zone.addEventListener("pointermove", e => {
       const b = noBtn.getBoundingClientRect();
       const d = Math.hypot((b.left + b.width/2) - e.clientX, (b.top + b.height/2) - e.clientY);
-      if (d < 100) runAway(noBtn, zone); // Reduced distance for better control
+      if (d < 100) runAway(noBtn, zone);
     });
-
-    // MOBILE TOUCH FIX: Jump immediately on touch
-    noBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault(); // Stop the click
-      runAway(noBtn, zone);
-    });
-
+    
     noBtn.addEventListener("click", e => e.preventDefault());
 
-    /* ---------- FINAL NO BUTTON (ALSO RUNS AWAY) ---------- */
+    /* ---------- FINAL NO BUTTON EVENTS ---------- */
     finalNo.addEventListener("touchstart", (e) => {
        e.preventDefault();
        runAway(finalNo, finalOptions);
@@ -368,7 +387,6 @@ Ledhante naa lantodu inkodu dhorakadu...
     finalNo.addEventListener("mouseover", () => {
        runAway(finalNo, finalOptions);
     });
-
     finalNo.addEventListener("click", e => e.preventDefault());
 
 
@@ -387,7 +405,6 @@ Ledhante naa lantodu inkodu dhorakadu...
       finalOptions.style.display = "none";
       grandFinale.style.display = "block";
       fullScreenConfetti();
-      // Extra Confetti Burst
       setTimeout(fullScreenConfetti, 1000);
     });
 
