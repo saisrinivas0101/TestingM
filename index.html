@@ -24,12 +24,11 @@
       display: grid;
       place-items: center;
       background: radial-gradient(circle at top, var(--bg2), var(--bg1));
-      font-family: system-ui, sans-serif;
+      font-family: system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
-      padding: 16px;
+      padding: 10px; /* Reduced padding for mobile */
     }
 
-    /* FULL-SCREEN CONFETTI CANVAS */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -40,38 +39,38 @@
     }
 
     .card {
-      width: min(720px, 92vw);
-      padding: 26px 22px;
+      width: min(720px, 96vw); /* Increased width usage for mobile */
+      padding: 20px 15px; /* Reduced padding inside card */
       background: var(--card);
       backdrop-filter: blur(10px);
       border-radius: 22px;
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.15);
       transition: all 0.3s ease;
-      max-height: 90vh;
+      max-height: 95vh;
       overflow-y: auto;
       position: relative;
       z-index: 100; 
     }
 
-    /* ERROR 1 FIX: Centering the Art */
     .art {
-      width: min(260px, 70vw); /* Adjusted width */
-      margin: 0 auto 10px auto; /* Force auto margins */
-      display: block; /* Ensures it behaves as a block for centering */
+      width: min(240px, 60vw);
+      margin: 0 auto 10px auto;
+      display: block;
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
     }
 
     h1 {
-      font-size: clamp(26px, 4vw, 44px);
-      margin: 12px 0 18px;
+      font-size: clamp(24px, 5vw, 40px);
+      margin: 10px 0 15px;
       color: #ff1f68;
+      line-height: 1.2;
     }
 
     .button-zone {
       position: relative;
-      width: min(520px, 92%);
-      height: 150px;
+      width: 100%;
+      height: 140px;
       margin: 0 auto;
     }
 
@@ -79,7 +78,7 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      padding: 16px 24px;
+      padding: 14px 22px;
       font-size: 18px;
       font-weight: 800;
       border-radius: 999px;
@@ -94,98 +93,90 @@
     }
 
     #yesBtn {
-      left: 18%;
+      left: 15%;
       background: var(--yes);
       color: #fff;
     }
     #yesBtn:hover { background: var(--yesHover); }
 
     #noBtn {
-      left: 62%;
+      left: 60%;
       background: #e5e7eb;
       color: #111827;
     }
 
     .hint {
-      margin-top: 10px;
-      font-size: 13px;
+      margin-top: 5px;
+      font-size: 12px;
       opacity: .7;
     }
 
     .result {
       display: none;
-      margin-top: 18px;
+      margin-top: 15px;
       animation: pop .35s ease;
       text-align: left;
       padding-bottom: 20px;
     }
 
     .result h2 {
-      font-size: clamp(28px, 4vw, 40px);
-      margin: 10px 0;
+      font-size: clamp(26px, 5vw, 36px);
+      margin: 5px 0 15px 0;
       text-align: center;
       color: #ff1f68;
     }
 
-    /* ERROR 2 FIX: Poem Formatting */
+    /* --- FIXED TEXT STYLING (Thick & Fitted) --- */
     .poem-text {
-      background: rgba(255, 255, 255, 0.6);
-      padding: 15px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 12px; /* Less padding = more space for text */
       border-radius: 15px;
-      font-size: 15px; /* Slightly smaller to fit mobile width */
-      line-height: 1.5;
-      color: #333;
-      /* Removed white-space: pre-line to prevent weird wrapping */
       border: 2px solid #ffcae0;
       margin-bottom: 20px;
       text-align: left;
+      width: 100%;
     }
     
     .poem-text p {
-        margin: 0 0 15px 0; /* Space between stanzas */
+        margin: 0 0 12px 0;
+        /* Key Changes for Mobile Text */
+        font-weight: 700; /* Bold/Thick text */
+        color: #222; /* Darker black for visibility */
+        font-size: clamp(13px, 3.8vw, 16px); /* Auto-adjust size based on screen width */
+        line-height: 1.4;
+        letter-spacing: -0.3px; /* Slightly tighter to fit more words */
     }
 
-    /* ERROR 3 FIX: Final Options Spacing */
     .final-options {
       text-align: center;
       margin-top: 20px;
       padding-top: 20px;
       border-top: 1px dashed #ffcae0;
       position: relative;
-      height: 200px; /* Increased height for more gap */
+      height: 180px;
       width: 100%;
     }
 
     .final-options p {
-      font-size: 19px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 800;
       color: #ff3b7a;
       margin: 0;
       position: absolute;
       width: 100%;
-      top: 10px; /* Text stays at top */
+      top: 0;
       left: 0;
-      padding: 0 10px;
     }
 
     .final-btn {
       position: absolute;
-      top: 100px; /* Moved buttons further down for vertical spacing */
+      top: 80px;
       cursor: pointer;
       z-index: 20;
     }
     
-    #finalYes {
-      left: 10%; /* Moved Left for horizontal spacing */
-      background: var(--yes);
-      color: white;
-    }
-    
-    #finalNo {
-      left: 60%; /* Moved Right for horizontal spacing */
-      background: #e5e7eb;
-      color: #111827;
-    }
+    #finalYes { left: 10%; background: var(--yes); color: white; }
+    #finalNo { left: 60%; background: #e5e7eb; color: #111827; }
 
     .grand-finale {
       display: none;
@@ -196,22 +187,23 @@
       animation: pop 0.5s ease;
     }
 
-    /* ERROR 4 FIX: Image Styling & Aspect Ratio */
+    /* PHOTO STYLING */
     .meka-pic {
-      width: 160px;
-      height: 160px;
+      width: 150px;
+      height: 150px;
       object-fit: cover;
-      object-position: top;
+      object-position: top center; /* Focus on face/sunglasses */
       border-radius: 50%;
-      border: 5px solid #ff3b7a;
+      border: 4px solid #ff3b7a;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       margin: 15px auto;
       display: block;
-      background-color: #eee; /* Placeholder color if image loads slow */
+      background-color: #f0f0f0;
     }
 
     .fireworks {
-      width: min(200px, 50vw);
+      width: 100%;
+      max-width: 200px;
       margin: 10px auto;
       display: block;
       border-radius: 10px;
@@ -288,7 +280,7 @@
           Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
         </p>
 
-        <p><b>Final ga cheppedhi enti ante...</b></p>
+        <p style="margin-top: 15px;"><b>Final ga cheppedhi enti ante...</b></p>
         
         <p>
           My love is a dangerous addiction,<br>
@@ -307,9 +299,9 @@
       <div class="grand-finale" id="grandFinale">
         <h2>Welcome to the Meka Family! ❤️</h2>
         
-        <img class="meka-pic" src="meka.jpg" loading="eager" alt="The Limited Edition Groom" />
+        <img class="meka-pic" src="meka.jpg" alt="Limited Edition Groom" />
         
-        <p>You chose the Limited Edition! No Refunds! 😂</p>
+        <p style="margin-top:10px;">You chose the Limited Edition! No Refunds! 😂</p>
         
         <img class="fireworks" src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" alt="Fireworks"/>
       </div>
@@ -378,7 +370,6 @@
         let newTop = Math.random() * (z.height - b.height);
         
         if (container.id === 'finalOptions') {
-            // Keep it somewhat lower so it doesn't cover text again
             newTop = Math.max(newTop, 60); 
         }
 
@@ -389,17 +380,14 @@
 
     /* ---------- EVENT LISTENERS ---------- */
     
-    // MAIN NO BUTTON
     noBtn.addEventListener("mouseover", () => runAway(noBtn, zone));
     noBtn.addEventListener("click", (e) => { e.preventDefault(); runAway(noBtn, zone); });
     noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); runAway(noBtn, zone); }, {passive: false});
 
-    // FINAL NO BUTTON
     finalNo.addEventListener("mouseover", () => runAway(finalNo, finalOptions));
     finalNo.addEventListener("click", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); });
     finalNo.addEventListener("touchstart", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); }, {passive: false});
 
-    // YES CLICKS
     yesBtn.onclick = function() {
         zone.style.display = "none";
         hint.style.display = "none";
