@@ -26,7 +26,7 @@
       background: radial-gradient(circle at top, var(--bg2), var(--bg1));
       font-family: system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
-      padding: 10px; /* Reduced padding for mobile */
+      padding: 10px;
     }
 
     #confettiCanvas {
@@ -38,12 +38,13 @@
       z-index: 9999;
     }
 
+    /* CARD STYLING - FULL WIDTH FOR MOBILE */
     .card {
-      width: min(720px, 96vw); /* Increased width usage for mobile */
-      padding: 20px 15px; /* Reduced padding inside card */
+      width: min(720px, 98vw); /* Increased width to 98% of screen */
+      padding: 20px 10px; /* Minimized side padding */
       background: var(--card);
       backdrop-filter: blur(10px);
-      border-radius: 22px;
+      border-radius: 20px;
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.15);
       transition: all 0.3s ease;
@@ -61,7 +62,7 @@
     }
 
     h1 {
-      font-size: clamp(24px, 5vw, 40px);
+      font-size: clamp(22px, 5vw, 40px);
       margin: 10px 0 15px;
       color: #ff1f68;
       line-height: 1.2;
@@ -79,7 +80,7 @@
       top: 50%;
       transform: translateY(-50%);
       padding: 14px 22px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 800;
       border-radius: 999px;
       border: none;
@@ -92,18 +93,9 @@
       z-index: 10;
     }
 
-    #yesBtn {
-      left: 15%;
-      background: var(--yes);
-      color: #fff;
-    }
+    #yesBtn { left: 15%; background: var(--yes); color: #fff; }
     #yesBtn:hover { background: var(--yesHover); }
-
-    #noBtn {
-      left: 60%;
-      background: #e5e7eb;
-      color: #111827;
-    }
+    #noBtn { left: 60%; background: #e5e7eb; color: #111827; }
 
     .hint {
       margin-top: 5px;
@@ -126,11 +118,11 @@
       color: #ff1f68;
     }
 
-    /* --- FIXED TEXT STYLING (Thick & Fitted) --- */
+    /* --- FINAL POEM FIX: THICK & SINGLE LINE OPTIMIZED --- */
     .poem-text {
-      background: rgba(255, 255, 255, 0.7);
-      padding: 12px; /* Less padding = more space for text */
-      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.75);
+      padding: 12px 6px; /* Very small side padding to maximize text space */
+      border-radius: 12px;
       border: 2px solid #ffcae0;
       margin-bottom: 20px;
       text-align: left;
@@ -138,13 +130,15 @@
     }
     
     .poem-text p {
-        margin: 0 0 12px 0;
-        /* Key Changes for Mobile Text */
-        font-weight: 700; /* Bold/Thick text */
-        color: #222; /* Darker black for visibility */
-        font-size: clamp(13px, 3.8vw, 16px); /* Auto-adjust size based on screen width */
+        margin: 0 0 10px 0;
+        /* KEY CHANGES FOR SINGLE LINE */
+        font-weight: 700; /* Bold/Thick */
+        color: #000; /* Deep Black */
+        /* Dynamic Font Size: shrink to 11px on small phones, grow to 16px on bigger ones */
+        font-size: clamp(11px, 3.4vw, 16px); 
         line-height: 1.4;
-        letter-spacing: -0.3px; /* Slightly tighter to fit more words */
+        letter-spacing: -0.6px; /* Tighten text to fit single line */
+        white-space: normal;
     }
 
     .final-options {
@@ -187,12 +181,12 @@
       animation: pop 0.5s ease;
     }
 
-    /* PHOTO STYLING */
+    /* IMAGE FIX */
     .meka-pic {
       width: 150px;
       height: 150px;
       object-fit: cover;
-      object-position: top center; /* Focus on face/sunglasses */
+      object-position: top center;
       border-radius: 50%;
       border: 4px solid #ff3b7a;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
@@ -299,7 +293,7 @@
       <div class="grand-finale" id="grandFinale">
         <h2>Welcome to the Meka Family! ❤️</h2>
         
-        <img class="meka-pic" src="meka.jpg" alt="Limited Edition Groom" />
+        <img class="meka-pic" src="meka.jpg?v=final" alt="Limited Edition Groom" />
         
         <p style="margin-top:10px;">You chose the Limited Edition! No Refunds! 😂</p>
         
@@ -386,21 +380,4 @@
 
     finalNo.addEventListener("mouseover", () => runAway(finalNo, finalOptions));
     finalNo.addEventListener("click", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); });
-    finalNo.addEventListener("touchstart", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); }, {passive: false});
-
-    yesBtn.onclick = function() {
-        zone.style.display = "none";
-        hint.style.display = "none";
-        result.style.display = "block";
-        triggerConfetti();
-    };
-
-    finalYes.onclick = function() {
-        finalOptions.style.display = "none";
-        grandFinale.style.display = "block";
-        triggerConfetti();
-        setTimeout(triggerConfetti, 1000);
-    };
-  </script>
-</body>
-</html>
+    finalNo.addEventListener("touchstart", (e) =>
