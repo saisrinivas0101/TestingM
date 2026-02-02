@@ -50,6 +50,8 @@
       transition: all 0.3s ease;
       max-height: 90vh;
       overflow-y: auto;
+      position: relative;
+      z-index: 100; /* Ensures card is above background */
     }
 
     .art {
@@ -70,7 +72,7 @@
       width: min(520px, 92%);
       height: 150px;
       margin: 0 auto;
-      touch-action: none;
+      /* Removed touch-action: none to fix laptop touch issues */
     }
 
     button {
@@ -87,14 +89,14 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, background .12s ease;
-      white-space: nowrap; /* Prevents text breaking in buttons */
+      white-space: nowrap;
+      z-index: 10;
     }
 
     #yesBtn {
       left: 18%;
       background: var(--yes);
       color: #fff;
-      z-index: 10;
     }
     #yesBtn:hover { background: var(--yesHover); }
 
@@ -102,7 +104,6 @@
       left: 62%;
       background: #e5e7eb;
       color: #111827;
-      z-index: 10;
     }
 
     .hint {
@@ -120,7 +121,7 @@
     }
 
     .result h2 {
-      font-size: clamp(28px, 4vw, 40px); /* Slightly smaller for mobile fit */
+      font-size: clamp(28px, 4vw, 40px);
       margin: 10px 0;
       text-align: center;
       color: #ff1f68;
@@ -139,14 +140,14 @@
       margin-bottom: 20px;
     }
 
-    /* FINAL OPTIONS STYLING - FIXED OVERLAP */
+    /* FINAL OPTIONS STYLING */
     .final-options {
       text-align: center;
       margin-top: 20px;
       padding-top: 20px;
       border-top: 1px dashed #ffcae0;
       position: relative;
-      height: 160px; /* Increased height to prevent overlap */
+      height: 160px;
       width: 100%;
     }
 
@@ -154,7 +155,7 @@
       font-size: 18px;
       font-weight: bold;
       color: #ff3b7a;
-      margin-bottom: 30px; /* Push text up */
+      margin-bottom: 30px;
       position: absolute;
       width: 100%;
       top: 10px;
@@ -163,17 +164,19 @@
 
     .final-btn {
       position: absolute;
-      top: 80px; /* Moved buttons lower */
+      top: 80px;
+      cursor: pointer;
+      z-index: 20; /* Higher z-index to ensure clickability */
     }
     
     #finalYes {
-      left: 15%; /* Adjusted for better mobile spacing */
+      left: 15%;
       background: var(--yes);
       color: white;
     }
     
     #finalNo {
-      left: 65%; /* Adjusted for better mobile spacing */
+      left: 65%;
       background: #e5e7eb;
       color: #111827;
     }
@@ -187,13 +190,12 @@
       animation: pop 0.5s ease;
     }
 
-    /* STYLE FOR YOUR PHOTO (MEKA) */
     .meka-pic {
       width: 160px;
       height: 160px;
       object-fit: cover;
-      object-position: top; /* Focus on face */
-      border-radius: 50%; /* Circle shape */
+      object-position: top;
+      border-radius: 50%;
       border: 5px solid #ff3b7a;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       margin: 15px auto;
@@ -297,6 +299,10 @@ Ledhante naa lantodu inkodu dhorakadu...
   </main>
 
   <script>
+    /* ---------- SAFE SCRIPT EXECUTION ---------- */
+    // Even if confetti fails, buttons will still work.
+    
+    // Element Selectors
     const zone = document.getElementById("zone");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
@@ -306,61 +312,108 @@ Ledhante naa lantodu inkodu dhorakadu...
     const finalYes = document.getElementById("finalYes");
     const finalNo = document.getElementById("finalNo");
     const grandFinale = document.getElementById("grandFinale");
-
-    /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
 
-    function resizeConfettiCanvas() {
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      confettiCanvas.width = Math.floor(window.innerWidth * dpr);
-      confettiCanvas.height = Math.floor(window.innerHeight * dpr);
-      confettiCanvas.style.width = "100vw";
-      confettiCanvas.style.height = "100vh";
+    // CONFETTI LOGIC (With Error Handling)
+    let confettiInstance;
+    try {
+        if (typeof confetti !== 'undefined') {
+            function resizeConfettiCanvas() {
+                const dpr = Math.max(1, window.devicePixelRatio || 1);
+                confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+                confettiCanvas.height = Math.floor(window.innerHeight * dpr);
+                confettiCanvas.style.width = "100vw";
+                confettiCanvas.style.height = "100vh";
+            }
+            resizeConfettiCanvas();
+            window.addEventListener("resize", resizeConfettiCanvas);
+            
+            confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
+        }
+    } catch (e) {
+        console.log("Confetti library skipped due to error: ", e);
     }
 
-    resizeConfettiCanvas();
-    window.addEventListener("resize", resizeConfettiCanvas);
-    window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
+    function triggerConfetti() {
+        if (confettiInstance) {
+            const end = Date.now() + 2000;
+            (function frame() {
+                confettiInstance({
+                    particleCount: 12, spread: 90, startVelocity: 45, ticks: 180,
+                    origin: { x: Math.random(), y: Math.random() * 0.3 }
+                });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            })();
 
-    const confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
-
-    function fullScreenConfetti() {
-      const end = Date.now() + 2000;
-      (function frame() {
-        confettiInstance({
-          particleCount: 12, spread: 90, startVelocity: 45, ticks: 180,
-          origin: { x: Math.random(), y: Math.random() * 0.3 }
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-
-      setTimeout(() => {
-        confettiInstance({
-          particleCount: 300, spread: 140, startVelocity: 60, ticks: 220,
-          origin: { x: 0.5, y: 0.55 }
-        });
-      }, 300);
+            setTimeout(() => {
+                confettiInstance({
+                    particleCount: 300, spread: 140, startVelocity: 60, ticks: 220,
+                    origin: { x: 0.5, y: 0.55 }
+                });
+            }, 300);
+        }
     }
 
     /* ---------- RUNAWAY LOGIC ---------- */
     function runAway(btn, container) {
-      const z = container.getBoundingClientRect();
-      const b = btn.getBoundingClientRect();
-      
-      let newLeft = Math.random() * (z.width - b.width);
-      let newTop = Math.random() * (z.height - b.height);
-      
-      // Ensure buttons don't disappear too far up in final container
-      if (container.id === 'finalOptions') {
-          // Keep it somewhat lower so it doesn't cover text again
-          newTop = Math.max(newTop, 40); 
-      }
+        const z = container.getBoundingClientRect();
+        const b = btn.getBoundingClientRect();
+        
+        let newLeft = Math.random() * (z.width - b.width);
+        let newTop = Math.random() * (z.height - b.height);
+        
+        if (container.id === 'finalOptions') {
+            newTop = Math.max(newTop, 40); 
+        }
 
-      btn.style.left = newLeft + "px";
-      btn.style.top = newTop + "px";
-      btn.style.transform = "none";
+        btn.style.left = newLeft + "px";
+        btn.style.top = newTop + "px";
+        btn.style.transform = "none";
     }
 
-    /* ---------- MAIN NO BUTTON EVENTS ---------- */
-    // Mobile Touch
-    noBtn.addEventListener("touchstart", (e)
+    /* ---------- EVENT LISTENERS ---------- */
+    
+    // MAIN NO BUTTON
+    noBtn.addEventListener("mouseover", () => runAway(noBtn, zone));
+    noBtn.addEventListener("click", (e) => { 
+        e.preventDefault(); 
+        runAway(noBtn, zone); 
+    });
+    // Touch support
+    noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Prevents click
+        runAway(noBtn, zone);
+    }, {passive: false});
+
+
+    // FINAL NO BUTTON
+    finalNo.addEventListener("mouseover", () => runAway(finalNo, finalOptions));
+    finalNo.addEventListener("click", (e) => { 
+        e.preventDefault(); 
+        runAway(finalNo, finalOptions); 
+    });
+    finalNo.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        runAway(finalNo, finalOptions);
+    }, {passive: false});
+
+
+    // YES BUTTON (Safe Click)
+    yesBtn.onclick = function() {
+        zone.style.display = "none";
+        hint.style.display = "none";
+        result.style.display = "block";
+        triggerConfetti();
+    };
+
+    // FINAL YES BUTTON
+    finalYes.onclick = function() {
+        finalOptions.style.display = "none";
+        grandFinale.style.display = "block";
+        triggerConfetti();
+        setTimeout(triggerConfetti, 1000);
+    };
+
+  </script>
+</body>
+</html>
