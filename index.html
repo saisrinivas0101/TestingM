@@ -72,10 +72,9 @@
       width: 100%;
       height: 140px;
       margin: 0 auto;
-      z-index: 200; /* Ensure zone is above text */
+      z-index: 200;
     }
 
-    /* BUTTON STYLES - HIGH Z-INDEX FIX */
     button {
       position: absolute;
       top: 50%;
@@ -91,8 +90,8 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, background .12s ease;
       white-space: nowrap;
-      z-index: 9999; /* SUPREME LAYER - Nothing can block this */
-      pointer-events: auto; /* Force clicks */
+      z-index: 9999;
+      pointer-events: auto;
     }
 
     #yesBtn { left: 15%; background: var(--yes); color: #fff; }
@@ -129,7 +128,7 @@
       text-align: left;
       width: 100%;
       position: relative;
-      z-index: 150; /* Lower than buttons */
+      z-index: 150;
     }
     
     .poem-text p {
@@ -169,7 +168,7 @@
       position: absolute;
       top: 80px;
       cursor: pointer;
-      z-index: 10000; /* Highest priority */
+      z-index: 10000;
     }
     
     #finalYes { left: 10%; background: var(--yes); color: white; }
@@ -214,6 +213,8 @@
 
 <body>
   <canvas id="confettiCanvas"></canvas>
+
+  <audio id="bgMusic" src="love.mp3" preload="auto"></audio>
 
   <main class="card">
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
@@ -265,13 +266,13 @@
 
         <p>
           Sindhu na ee nirikshanaki ni preme eeh ne velugu,<br>
-          Mana Love Story ki, nee Smile eh ne Beginning-u...<br>
-          nee andhanni varnisthu... marchipoya ne Ending-u!<br>
+          Mana Love Story ki, nee Smile eh kada Beginning-u...<br>
+          Kani nee andhanni varnisthu... marchipoya ne Ending-u!<br>
           Nuvvu 'Yes' ante unta nee thoduga Life Long-u.
         </p>
 
         <p>
-          Nuvvu oppukunte avutha nee manasu doche Bandhipotu,<br>
+          Nuvvu oppukunte aipotha nee manasu doche Bandhipotu,<br>
           Mana Pellitho vestha... ee shairi ki 'The End Card-u'<br>
           Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
         </p>
@@ -314,6 +315,7 @@
     const finalNo = document.getElementById("finalNo");
     const grandFinale = document.getElementById("grandFinale");
     const confettiCanvas = document.getElementById("confettiCanvas");
+    const bgMusic = document.getElementById("bgMusic");
 
     /* ---------- CONFETTI ---------- */
     let confettiInstance;
@@ -361,7 +363,6 @@
         let newLeft = Math.random() * (z.width - b.width);
         let newTop = Math.random() * (z.height - b.height);
         
-        // Safety check for Final Options container
         if (container.id === 'finalOptions') {
              newTop = Math.max(newTop, 60); 
         }
@@ -382,7 +383,7 @@
     }
     yesBtn.addEventListener('click', handleYesClick);
     yesBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Prevents double-fire
+        e.preventDefault(); 
         handleYesClick();
     }, {passive: false});
 
@@ -395,8 +396,13 @@
     noBtn.addEventListener('click', handleNoRun);
     noBtn.addEventListener('touchstart', handleNoRun, {passive: false});
 
-    // 3. FINAL YES BUTTON
+    // 3. FINAL YES BUTTON (PLAYS MUSIC)
     function handleFinalYes() {
+        // Play Audio
+        if(bgMusic) {
+            bgMusic.play().catch(e => console.log("Audio Error:", e));
+        }
+
         finalOptions.style.display = "none";
         grandFinale.style.display = "block";
         triggerConfetti();
