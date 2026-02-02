@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>For My Sindhu ❤️</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg1: #ffd6e7;
+      --bg2: #ffeef6;
+      --card: #ffffffcc;
+      --yes: #ff3b7a;
+      --yesHover: #ff1f68;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at top, var(--bg2), var(--bg1));
+      font-family: system-ui, sans-serif;
+      overflow-x: hidden;
+      padding: 16px;
+    }
+
+    /* FULL-SCREEN CONFETTI CANVAS */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .card {
+      width: min(720px, 92vw);
+      padding: 26px 22px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 18px 60px rgba(0,0,0,.15);
+      transition: all 0.3s ease;
+      max-height: 90vh; /* Limits height for better mobile scrolling */
+      overflow-y: auto; /* Adds scroll if content is too long */
+    }
+
+    .art {
+      width: min(260px, 80vw);
+      margin: 0 auto 10px;
+      display: block;
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
+    }
+
+    h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      margin: 12px 0 18px;
+      color: #ff1f68;
+    }
+
+    .button-zone {
+      position: relative;
+      width: min(520px, 92%);
+      height: 150px;
+      margin: 0 auto;
+      touch-action: none; /* Crucial for mobile touch handling */
+    }
+
+    button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 16px 24px;
+      font-size: 18px;
+      font-weight: 800;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0,0,0,.14);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .12s ease, background .12s ease;
+    }
+
+    #yesBtn {
+      left: 18%;
+      background: var(--yes);
+      color: #fff;
+      z-index: 10;
+    }
+    #yesBtn:hover { background: var(--yesHover); }
+
+    #noBtn {
+      left: 62%;
+      background: #e5e7eb;
+      color: #111827;
+      z-index: 10;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      opacity: .7;
+    }
+
+    .result {
+      display: none;
+      margin-top: 18px;
+      animation: pop .35s ease;
+      text-align: left;
+      padding-bottom: 20px;
+    }
+
+    .result h2 {
+      font-size: clamp(30px, 4.5vw, 46px);
+      margin: 10px 0;
+      text-align: center;
+      color: #ff1f68;
+    }
+
+    /* POEM STYLING */
+    .poem-text {
+      background: rgba(255, 255, 255, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre-line;
+      border: 2px solid #ffcae0;
+      margin-bottom: 20px;
+    }
+
+    /* FINAL OPTIONS STYLING */
+    .final-options {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed #ffcae0;
+      position: relative;
+      height: 120px; /* Space for buttons to move */
+    }
+
+    .final-options p {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ff3b7a;
+      margin-bottom: 20px;
+    }
+
+    .final-btn {
+      position: absolute; /* Allows movement */
+      top: 60%; /* Position below text */
+    }
+    
+    #finalYes {
+      left: 20%;
+      background: var(--yes);
+      color: white;
+    }
+    
+    #finalNo {
+      left: 60%;
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .grand-finale {
+      display: none;
+      text-align: center;
+      color: #ff3b7a;
+      font-size: 24px;
+      font-weight: bold;
+      animation: pop 0.5s ease;
+    }
+
+    .fireworks {
+      width: min(200px, 50vw);
+      margin: 10px auto;
+      display: block;
+    }
+
+    @keyframes pop {
+      from { transform: scale(.96); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="confettiCanvas"></canvas>
+
+  <main class="card">
+    <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="fur" x1="0" x2="1">
+          <stop offset="0" stop-color="#f7c7a1"/>
+          <stop offset="1" stop-color="#f2a97b"/>
+        </linearGradient>
+        <linearGradient id="heart" x1="0" x2="1">
+          <stop offset="0" stop-color="#ff4d7d"/>
+          <stop offset="1" stop-color="#ff1f68"/>
+        </linearGradient>
+      </defs>
+      <path d="M250 50 C250 33 270 25 282 38 C294 25 314 33 314 50 C314 78 282 92 282 106 C282 92 250 78 250 50Z" fill="url(#heart)"/>
+      <path d="M90 120 C90 70 140 40 190 60 C240 40 290 70 290 120 C290 180 240 210 190 210 C140 210 90 180 90 120Z" fill="url(#fur)"/>
+      <path d="M110 92 L95 55 L140 78 Z" fill="#f2a97b"/>
+      <path d="M270 92 L285 55 L240 78 Z" fill="#f2a97b"/>
+      <circle cx="160" cy="130" r="8"/>
+      <circle cx="220" cy="130" r="8"/>
+      <path d="M190 144 C186 144 182 148 182 152 C182 160 190 164 190 170 C190 164 198 160 198 152 C198 148 194 144 190 144Z" fill="#ff7aa2"/>
+    </svg>
+
+    <h1>Sindhu, will you be my Valentine?</h1>
+
+    <section class="button-zone" id="zone">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </section>
+
+    <div class="hint" id="hint">“No” seems a bit shy 😈</div>
+
+    <section class="result" id="result">
+      <h2>YAY! Love You! 🎉</h2>
+      
+      <div class="poem-text">
+Sindhu... nuvvu lekapothe nenu lenu,
+Ni peru eh ne na Heartbeat iche sound-u!
+Rathri ayithe nee kalale naaku dhindu,
+Nee aalochanalalo munigipovadame naku kick-iche mandhu.
+
+Naa Swag ni chusi thisare movie 'James Bond-u'! 😎
+Nee joliki evaranna vasthe, thisthane vaadi bendu!
+Nannu premisthe sky high ki velthundi nee Range-u,
+Ni gundello ivvave nakocham sandhu.
+
+Sindhu na ee nirikshanaki ni preme eeh ne velugu,
+Mana Love Story ki, nee Smile eh kada Beginning-u...
+Kani nee andhanni varnisthu... marchipoya ne Ending-u!
+Nuvvu 'Yes' ante unta nee thoduga Life Long-u.
+
+Nuvvu oppukunte aipotha nee manasu doche Bandhipotu,
+Mana Pellitho vestha... ee shairi ki 'The End Card-u'
+Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
+
+<b>Final ga cheppedhi enti ante...</b>
+
+My love is a dangerous addiction,
+Nuvvu oppukunte avuthav naa family ki addition,
+Ledhante naa lantodu inkodu dhorakadu...
+<b>Cause I'm a Limited Edition! 😎🔥</b>
+      </div>
+
+      <div class="final-options" id="finalOptions">
+        <p>So... Final ga oppukuntunnava? 💍</p>
+        <button class="final-btn" id="finalYes">Yes, Uppukunta! 😍</button>
+        <button class="final-btn" id="finalNo">No 🏃‍♂️</button>
+      </div>
+
+      <div class="grand-finale" id="grandFinale">
+        <h2>Welcome to the Family! ❤️</h2>
+        <p>You chose the Limited Edition! No Refunds! 😂</p>
+        <img class="fireworks" src="https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif" alt="Fireworks"/>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const zone = document.getElementById("zone");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const result = document.getElementById("result");
+    const hint = document.getElementById("hint");
+    const finalOptions = document.getElementById("finalOptions");
+    const finalYes = document.getElementById("finalYes");
+    const finalNo = document.getElementById("finalNo");
+    const grandFinale = document.getElementById("grandFinale");
+
+    /* ---------- CONFETTI ---------- */
+    const confettiCanvas = document.getElementById("confettiCanvas");
+
+    function resizeConfettiCanvas() {
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+      confettiCanvas.height = Math.floor(window.innerHeight * dpr);
+      confettiCanvas.style.width = "100vw";
+      confettiCanvas.style.height = "100vh";
+    }
+
+    resizeConfettiCanvas();
+    window.addEventListener("resize", resizeConfettiCanvas);
+    window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
+
+    const confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
+
+    function fullScreenConfetti() {
+      const end = Date.now() + 2000;
+      (function frame() {
+        confettiInstance({
+          particleCount: 12, spread: 90, startVelocity: 45, ticks: 180,
+          origin: { x: Math.random(), y: Math.random() * 0.3 }
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+
+      setTimeout(() => {
+        confettiInstance({
+          particleCount: 300, spread: 140, startVelocity: 60, ticks: 220,
+          origin: { x: 0.5, y: 0.55 }
+        });
+      }, 300);
+    }
+
+    /* ---------- RUNAWAY LOGIC (UPDATED FOR MOBILE) ---------- */
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function runAway(btn, container) {
+      const z = container.getBoundingClientRect();
+      const b = btn.getBoundingClientRect();
+
+      // Simple random jump for mobile/touch reliability
+      let newLeft = Math.random() * (z.width - b.width);
+      let newTop = Math.random() * (z.height - b.height);
+
+      btn.style.left = newLeft + "px";
+      btn.style.top = newTop + "px";
+      btn.style.transform = "none";
+    }
+
+    // MAIN NO BUTTON (Mobile & Desktop)
+    function moveNo(px, py) {
+      // Keep existing smooth logic for mouse hover if needed, 
+      // but 'runAway' is safer for mobile taps.
+      runAway(noBtn, zone);
+    }
+
+    // Mouse Interaction
+    zone.addEventListener("pointermove", e => {
+      const b = noBtn.getBoundingClientRect();
+      const d = Math.hypot((b.left + b.width/2) - e.clientX, (b.top + b.height/2) - e.clientY);
+      if (d < 100) runAway(noBtn, zone); // Reduced distance for better control
+    });
+
+    // MOBILE TOUCH FIX: Jump immediately on touch
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault(); // Stop the click
+      runAway(noBtn, zone);
+    });
+
+    noBtn.addEventListener("click", e => e.preventDefault());
+
+    /* ---------- FINAL NO BUTTON (ALSO RUNS AWAY) ---------- */
+    finalNo.addEventListener("touchstart", (e) => {
+       e.preventDefault();
+       runAway(finalNo, finalOptions);
+    });
+    
+    finalNo.addEventListener("mouseover", () => {
+       runAway(finalNo, finalOptions);
+    });
+
+    finalNo.addEventListener("click", e => e.preventDefault());
+
+
+    /* ---------- YES CLICKS ---------- */
+    // Initial Yes
+    yesBtn.addEventListener("click", () => {
+      zone.style.display = "none";
+      hint.style.display = "none";
+      result.style.display = "block";
+      resizeConfettiCanvas();
+      fullScreenConfetti();
+    });
+
+    // Final Yes
+    finalYes.addEventListener("click", () => {
+      finalOptions.style.display = "none";
+      grandFinale.style.display = "block";
+      fullScreenConfetti();
+      // Extra Confetti Burst
+      setTimeout(fullScreenConfetti, 1000);
+    });
+
+  </script>
+</body>
+</html>
