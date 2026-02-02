@@ -51,13 +51,14 @@
       max-height: 90vh;
       overflow-y: auto;
       position: relative;
-      z-index: 100; /* Ensures card is above background */
+      z-index: 100; 
     }
 
+    /* ERROR 1 FIX: Centering the Art */
     .art {
-      width: min(260px, 80vw);
-      margin: 0 auto 10px;
-      display: block;
+      width: min(260px, 70vw); /* Adjusted width */
+      margin: 0 auto 10px auto; /* Force auto margins */
+      display: block; /* Ensures it behaves as a block for centering */
       filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
     }
 
@@ -72,7 +73,6 @@
       width: min(520px, 92%);
       height: 150px;
       margin: 0 auto;
-      /* Removed touch-action: none to fix laptop touch issues */
     }
 
     button {
@@ -127,56 +127,62 @@
       color: #ff1f68;
     }
 
-    /* POEM STYLING */
+    /* ERROR 2 FIX: Poem Formatting */
     .poem-text {
       background: rgba(255, 255, 255, 0.6);
-      padding: 20px;
+      padding: 15px;
       border-radius: 15px;
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 15px; /* Slightly smaller to fit mobile width */
+      line-height: 1.5;
       color: #333;
-      white-space: pre-line;
+      /* Removed white-space: pre-line to prevent weird wrapping */
       border: 2px solid #ffcae0;
       margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .poem-text p {
+        margin: 0 0 15px 0; /* Space between stanzas */
     }
 
-    /* FINAL OPTIONS STYLING */
+    /* ERROR 3 FIX: Final Options Spacing */
     .final-options {
       text-align: center;
       margin-top: 20px;
       padding-top: 20px;
       border-top: 1px dashed #ffcae0;
       position: relative;
-      height: 160px;
+      height: 200px; /* Increased height for more gap */
       width: 100%;
     }
 
     .final-options p {
-      font-size: 18px;
+      font-size: 19px;
       font-weight: bold;
       color: #ff3b7a;
-      margin-bottom: 30px;
+      margin: 0;
       position: absolute;
       width: 100%;
-      top: 10px;
+      top: 10px; /* Text stays at top */
       left: 0;
+      padding: 0 10px;
     }
 
     .final-btn {
       position: absolute;
-      top: 80px;
+      top: 100px; /* Moved buttons further down for vertical spacing */
       cursor: pointer;
-      z-index: 20; /* Higher z-index to ensure clickability */
+      z-index: 20;
     }
     
     #finalYes {
-      left: 15%;
+      left: 10%; /* Moved Left for horizontal spacing */
       background: var(--yes);
       color: white;
     }
     
     #finalNo {
-      left: 65%;
+      left: 60%; /* Moved Right for horizontal spacing */
       background: #e5e7eb;
       color: #111827;
     }
@@ -190,6 +196,7 @@
       animation: pop 0.5s ease;
     }
 
+    /* ERROR 4 FIX: Image Styling & Aspect Ratio */
     .meka-pic {
       width: 160px;
       height: 160px;
@@ -200,6 +207,7 @@
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       margin: 15px auto;
       display: block;
+      background-color: #eee; /* Placeholder color if image loads slow */
     }
 
     .fireworks {
@@ -253,42 +261,53 @@
       <h2>YAY! Love You! 🎉</h2>
       
       <div class="poem-text">
-Sindhu... nuvvu lekapothe nenu lenu,
-Ni peru eh ne na Heartbeat iche sound-u!
-Rathri ayithe nee kalale naaku dhindu,
-Nee aalochanalalo munigipovadame naku kick-iche mandhu.
+        <p>
+          Sindhu... nuvvu lekapothe nenu lenu,<br>
+          Ni peru eh ne na Heartbeat iche sound-u!<br>
+          Rathri ayithe nee kalale naaku dhindu,<br>
+          Nee aalochanalalo munigipovadame naku kick-iche mandhu.
+        </p>
 
-Naa Swag ni chusi thisare movie 'James Bond-u'! 😎
-Nee joliki evaranna vasthe, thisthane vaadi bendu!
-Nannu premisthe sky high ki velthundi nee Range-u,
-Ni gundello ivvave nakocham sandhu.
+        <p>
+          Naa Swag ni chusi thisare movie 'James Bond-u'! 😎<br>
+          Nee joliki evaranna vasthe, thisthane vaadi bendu!<br>
+          Nannu premisthe sky high ki velthundi nee Range-u,<br>
+          Ni gundello ivvave nakocham sandhu.
+        </p>
 
-Sindhu na ee nirikshanaki ni preme eeh ne velugu,
-Mana Love Story ki, nee Smile eh kada Beginning-u...
-Kani nee andhanni varnisthu... marchipoya ne Ending-u!
-Nuvvu 'Yes' ante unta nee thoduga Life Long-u.
+        <p>
+          Sindhu na ee nirikshanaki ni preme eeh ne velugu,<br>
+          Mana Love Story ki, nee Smile eh kada Beginning-u...<br>
+          Kani nee andhanni varnisthu... marchipoya ne Ending-u!<br>
+          Nuvvu 'Yes' ante unta nee thoduga Life Long-u.
+        </p>
 
-Nuvvu oppukunte aipotha nee manasu doche Bandhipotu,
-Mana Pellitho vestha... ee shairi ki 'The End Card-u'
-Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
+        <p>
+          Nuvvu oppukunte aipotha nee manasu doche Bandhipotu,<br>
+          Mana Pellitho vestha... ee shairi ki 'The End Card-u'<br>
+          Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
+        </p>
 
-<b>Final ga cheppedhi enti ante...</b>
-My love is a dangerous addiction,
-Nuvvu oppukunte avuthav naa family ki addition,
-Ledhante naa lantodu inkodu dhorakadu...
-<b>Cause I'm a Limited Edition! 😎🔥</b>
+        <p><b>Final ga cheppedhi enti ante...</b></p>
+        
+        <p>
+          My love is a dangerous addiction,<br>
+          Nuvvu oppukunte avuthav naa family ki addition,<br>
+          Ledhante naa lantodu inkodu dhorakadu...<br>
+          <b>Cause I'm a Limited Edition! 😎🔥</b>
+        </p>
       </div>
 
       <div class="final-options" id="finalOptions">
         <p>So... Final ga oppukuntunnava? 💍</p>
-        <button class="final-btn" id="finalYes">Yes, Uppukunta! 😍</button>
+        <button class="final-btn" id="finalYes">Yes, Uppukunta!</button>
         <button class="final-btn" id="finalNo">No 🏃‍♂️</button>
       </div>
 
       <div class="grand-finale" id="grandFinale">
         <h2>Welcome to the Meka Family! ❤️</h2>
         
-        <img class="meka-pic" src="meka.jpg" alt="The Limited Edition Groom" />
+        <img class="meka-pic" src="meka.jpg" loading="eager" alt="The Limited Edition Groom" />
         
         <p>You chose the Limited Edition! No Refunds! 😂</p>
         
@@ -300,9 +319,6 @@ Ledhante naa lantodu inkodu dhorakadu...
 
   <script>
     /* ---------- SAFE SCRIPT EXECUTION ---------- */
-    // Even if confetti fails, buttons will still work.
-    
-    // Element Selectors
     const zone = document.getElementById("zone");
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
@@ -314,7 +330,6 @@ Ledhante naa lantodu inkodu dhorakadu...
     const grandFinale = document.getElementById("grandFinale");
     const confettiCanvas = document.getElementById("confettiCanvas");
 
-    // CONFETTI LOGIC (With Error Handling)
     let confettiInstance;
     try {
         if (typeof confetti !== 'undefined') {
@@ -331,7 +346,7 @@ Ledhante naa lantodu inkodu dhorakadu...
             confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
         }
     } catch (e) {
-        console.log("Confetti library skipped due to error: ", e);
+        console.log("Confetti Error");
     }
 
     function triggerConfetti() {
@@ -363,7 +378,8 @@ Ledhante naa lantodu inkodu dhorakadu...
         let newTop = Math.random() * (z.height - b.height);
         
         if (container.id === 'finalOptions') {
-            newTop = Math.max(newTop, 40); 
+            // Keep it somewhat lower so it doesn't cover text again
+            newTop = Math.max(newTop, 60); 
         }
 
         btn.style.left = newLeft + "px";
@@ -375,30 +391,15 @@ Ledhante naa lantodu inkodu dhorakadu...
     
     // MAIN NO BUTTON
     noBtn.addEventListener("mouseover", () => runAway(noBtn, zone));
-    noBtn.addEventListener("click", (e) => { 
-        e.preventDefault(); 
-        runAway(noBtn, zone); 
-    });
-    // Touch support
-    noBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault(); // Prevents click
-        runAway(noBtn, zone);
-    }, {passive: false});
-
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); runAway(noBtn, zone); });
+    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); runAway(noBtn, zone); }, {passive: false});
 
     // FINAL NO BUTTON
     finalNo.addEventListener("mouseover", () => runAway(finalNo, finalOptions));
-    finalNo.addEventListener("click", (e) => { 
-        e.preventDefault(); 
-        runAway(finalNo, finalOptions); 
-    });
-    finalNo.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        runAway(finalNo, finalOptions);
-    }, {passive: false});
+    finalNo.addEventListener("click", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); });
+    finalNo.addEventListener("touchstart", (e) => { e.preventDefault(); runAway(finalNo, finalOptions); }, {passive: false});
 
-
-    // YES BUTTON (Safe Click)
+    // YES CLICKS
     yesBtn.onclick = function() {
         zone.style.display = "none";
         hint.style.display = "none";
@@ -406,14 +407,12 @@ Ledhante naa lantodu inkodu dhorakadu...
         triggerConfetti();
     };
 
-    // FINAL YES BUTTON
     finalYes.onclick = function() {
         finalOptions.style.display = "none";
         grandFinale.style.display = "block";
         triggerConfetti();
         setTimeout(triggerConfetti, 1000);
     };
-
   </script>
 </body>
 </html>
