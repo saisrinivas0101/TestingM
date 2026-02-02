@@ -271,7 +271,6 @@ Mana Pellitho vestha... ee shairi ki 'The End Card-u'
 Nenu kopam lo thittina.. ardham chesukoni vesthava natho inko adugu?
 
 <b>Final ga cheppedhi enti ante...</b>
-        
 My love is a dangerous addiction,
 Nuvvu oppukunte avuthav naa family ki addition,
 Ledhante naa lantodu inkodu dhorakadu...
@@ -364,50 +363,4 @@ Ledhante naa lantodu inkodu dhorakadu...
 
     /* ---------- MAIN NO BUTTON EVENTS ---------- */
     // Mobile Touch
-    noBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      runAway(noBtn, zone);
-    });
-
-    // Mouse Hover
-    zone.addEventListener("pointermove", e => {
-      const b = noBtn.getBoundingClientRect();
-      const d = Math.hypot((b.left + b.width/2) - e.clientX, (b.top + b.height/2) - e.clientY);
-      if (d < 100) runAway(noBtn, zone);
-    });
-    
-    noBtn.addEventListener("click", e => e.preventDefault());
-
-    /* ---------- FINAL NO BUTTON EVENTS ---------- */
-    finalNo.addEventListener("touchstart", (e) => {
-       e.preventDefault();
-       runAway(finalNo, finalOptions);
-    });
-    
-    finalNo.addEventListener("mouseover", () => {
-       runAway(finalNo, finalOptions);
-    });
-    finalNo.addEventListener("click", e => e.preventDefault());
-
-
-    /* ---------- YES CLICKS ---------- */
-    // Initial Yes
-    yesBtn.addEventListener("click", () => {
-      zone.style.display = "none";
-      hint.style.display = "none";
-      result.style.display = "block";
-      resizeConfettiCanvas();
-      fullScreenConfetti();
-    });
-
-    // Final Yes
-    finalYes.addEventListener("click", () => {
-      finalOptions.style.display = "none";
-      grandFinale.style.display = "block";
-      fullScreenConfetti();
-      setTimeout(fullScreenConfetti, 1000);
-    });
-
-  </script>
-</body>
-</html>
+    noBtn.addEventListener("touchstart", (e)
